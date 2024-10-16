@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Our Internal website</title>
+        <script src="https://unpkg.com/amazon-quicksight-embedding-sdk@2.8.0/dist/quicksight-embedding-js-sdk.min.js"></script>
+        <script type="text/javascript" nonce="<ScriptNonce>">
+            const embedGenerativeQnA = async() => {    
+                const {
+                    createEmbeddingContext,
+                } = QuickSightEmbedding;
+
+                const embeddingContext = await createEmbeddingContext({
+                    onChange: (changeEvent, metadata) => {
+                        console.log('Context received a change', changeEvent, metadata);
+                    },
+                });
+
+                const frameOptions = {
+                    url: "<QSEmbedUrl>", // replace this value with the url generated via embedding API
+                    container: '#experience-container',
+                    height: "700px",
+                    width: "1000px",
+                    onChange: (changeEvent, metadata) => {
+                        switch (changeEvent.eventName) {
+                            case 'FRAME_MOUNTED': {
+                                console.log("Do something when the experience frame is mounted.");
+                                break;
+                            }
+                            case 'FRAME_LOADED': {
+                                console.log("Do something when the experience frame is loaded.");
+                                break;
+                            }
+                        }
+                    },
+                };
+
+                const contentOptions = {
+                    panelOptions: {
+                        panelType: 'FULL',
+                        title: 'Custom Title',
+                        showQIcon: false,
+                    },
+                    // Uncomment below, if you prefer an experience closer to embedQSearchBar instead of a full panel.
+                    
+                    panelOptions: {
+                        panelType: 'SEARCH_BAR',
+                        focusedHeight: '250px',
+                        expandedHeight: '500px',
+                    },
+                    
+                    showTopicName: false,
+                    showPinboard: false,
+                    allowTopicSelection: false,
+                    allowFullscreen: false,
+                    searchPlaceholderText: 'Custom Search Placeholder',
+                    themeOptions: {
+                        themeArn: 'arn:aws:quicksight:<Region>:<AWS-Account-ID>:theme/<Theme-ID>'
+                    },
+                    onMessage: async (messageEvent, experienceMetadata) => {
+                        switch (messageEvent.eventName) {
+                            case 'Q_SEARCH_OPENED': {
+                                console.log("Do something when SEARCH_BAR type panel is expanded");
+                                break;
+                            }
+                            case 'Q_SEARCH_FOCUSED': {
+                                console.log("Do something when SEARCH_BAR type panel is focused");
+                                break;
+                            }
+                            case 'Q_SEARCH_CLOSED': {
+                                console.log("Do something when SEARCH_BAR type panel is collapsed");
+                                break;
+                            }
+                            case 'Q_PANEL_ENTERED_FULLSCREEN': {
+                                console.log("Do something when the experience enters full screen mode");
+                                break;
+                            }
+                            case 'Q_PANEL_EXITED_FULLSCREEN': {
+                                console.log("Do something when the experience exits full screen mode");
+                                break;
+                            }
+                            case 'CONTENT_LOADED': {
+                                console.log("Do something when the experience is loaded");
+                                break;
+                            }
+                            case 'ERROR_OCCURRED': {
+                                console.log("Do something when an error occurs.");
+                                break;
+                            }
+                        }
+                    }
+                };
+                const embeddedGenerativeQnExperience = await embeddingContext.embedGenerativeQnA(frameOptions, contentOptions);
+            };
+        </script>
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+        }
+        nav {
+            background-color: #f4f4f4;
+            padding: 0.5rem;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 10px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+        }
+        main {
+            padding: 20px;
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+    </head>
+
+    <body onload="embedGenerativeQnA()">
+            <header>
+        <h1>Company Intranet
+        <div id="experience-container"></div></h1>
+    </header>
+        
+      <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    
+    <main>
+        <section id="home">
+            <h2>Welcome to Our Intranet</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor. Ut in nulla enim.</p>
+        </section>
+        
+        <section id="about">
+            <h2>About Us</h2>
+            <p>Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.</p>
+        </section>
+        
+        <section id="services">
+            <h2>Our Services</h2>
+            <ul>
+                <li>Lorem ipsum dolor sit amet</li>
+                <li>Consectetur adipiscing elit</li>
+                <li>Nullam in dui mauris</li>
+                <li>Vivamus hendrerit arcu sed erat molestie</li>
+            </ul>
+        </section>
+        
+        <section id="contact">
+            <h2>Contact Us</h2>
+            <p>Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor. Ut in nulla enim. Phasellus molestie magna non est bibendum non venenatis nisl tempor. Suspendisse dictum feugiat nisl ut dapibus.</p>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 Company Name. All rights reserved.</p>
+    </footer>
+    </body>
+
+</html>
