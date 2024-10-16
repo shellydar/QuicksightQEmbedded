@@ -7,8 +7,8 @@ from aws_cdk import (
     Stack,
     RemovalPolicy,
     Duration,
-    CfnOutput
-    Stack,
+    CfnOutput,
+    Stack
     # aws_sqs as sqs,
 )
 from constructs import Construct
@@ -55,3 +55,9 @@ class QuicksightQEmbeddedStack(Stack):
                 authorization_type=apigateway.AuthorizationType.IAM
             )
         )                
+        proxy_resource = api.root.add_proxy(
+            default_integration=api.LambdaIntegration(lambda_function),
+            path_part="{proxy+}")
+        
+        CfnOutput(self, "ApiUrl",value=f"https://{api.rest_api_id}.execute-api.{self.region}.amazonaws.com/prod",
+                  description="API Gateway endpoint URL for Prod stage")
