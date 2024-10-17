@@ -4,13 +4,11 @@ from aws_cdk import (
     aws_apigateway as apigateway,
     aws_logs as logs,
     aws_quicksight as quicksight,
-    # aws_sqs as sqs,
     Stack,
     RemovalPolicy,
     Duration,
     CfnOutput,
     Stack
-    # aws_sqs as sqs,
 )
 from constructs import Construct
 

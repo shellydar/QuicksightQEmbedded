@@ -1,6 +1,8 @@
 
 # Amazon Q for Quicksight embedded in a static website
 
+This CDK stack create an API GW pointing to a Lambda that returns a static webpage with a Q&A bar pointing toa quicksight topic.
+
 
 To manually create a virtualenv on MacOS and Linux:
 
